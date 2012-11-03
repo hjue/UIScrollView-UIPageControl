@@ -15,6 +15,7 @@
 		7444F07515B9890700485EAA /* HJAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7444F07415B9890700485EAA /* HJAppDelegate.m */; };
 		7444F08115B9908400485EAA /* HJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7444F08015B9908400485EAA /* HJViewController.m */; };
 		7444F08515BA390F00485EAA /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7444F08415BA390F00485EAA /* View.xib */; };
+		7483A19A15BACB760080BAB6 /* HJScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7483A19915BACB760080BAB6 /* HJScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		7444F07F15B9908400485EAA /* HJViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJViewController.h; sourceTree = "<group>"; };
 		7444F08015B9908400485EAA /* HJViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJViewController.m; sourceTree = "<group>"; };
 		7444F08415BA390F00485EAA /* View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
+		7483A19815BACB760080BAB6 /* HJScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJScrollView.h; sourceTree = "<group>"; };
+		7483A19915BACB760080BAB6 /* HJScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJScrollView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 				7444F07415B9890700485EAA /* HJAppDelegate.m */,
 				7444F07F15B9908400485EAA /* HJViewController.h */,
 				7444F08015B9908400485EAA /* HJViewController.m */,
+				7483A19815BACB760080BAB6 /* HJScrollView.h */,
+				7483A19915BACB760080BAB6 /* HJScrollView.m */,
 				7444F06B15B9890700485EAA /* Supporting Files */,
 			);
 			path = "UIScrollView-UIPageControl";
@@ -165,6 +170,7 @@
 				7444F07115B9890700485EAA /* main.m in Sources */,
 				7444F07515B9890700485EAA /* HJAppDelegate.m in Sources */,
 				7444F08115B9908400485EAA /* HJViewController.m in Sources */,
+				7483A19A15BACB760080BAB6 /* HJScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,6 +241,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UIScrollView-UIPageControl/UIScrollView-UIPageControl-Prefix.pch";
 				INFOPLIST_FILE = "UIScrollView-UIPageControl/UIScrollView-UIPageControl-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -246,6 +253,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "UIScrollView-UIPageControl/UIScrollView-UIPageControl-Prefix.pch";
 				INFOPLIST_FILE = "UIScrollView-UIPageControl/UIScrollView-UIPageControl-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

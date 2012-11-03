@@ -7,16 +7,18 @@
 //
 
 #import "HJViewController.h"
-
+#import "HJScrollView.h"
 
 @interface HJViewController ()
 {
-    BOOL pageControlBeingUsed;
+    NSInteger currnetPage;
+    NSInteger numberOfPages;
 }
 @end
 
 @implementation HJViewController
-@synthesize scrollView;
+
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -28,10 +30,11 @@
 
 -(void)createView
 {
-    pageControlBeingUsed = NO;
-    int numberOfPages = 3;
+
+    currnetPage = 0;
+    numberOfPages = 3;
     
-    scrollView = [[UIScrollView alloc]init];
+    scrollView = [[HJScrollView alloc]init];
     scrollView.frame = CGRectMake(0, 0, 320, 424);
     scrollView.pagingEnabled = YES;
     scrollView.backgroundColor = [UIColor whiteColor];
@@ -41,7 +44,7 @@
     scrollView.showsVerticalScrollIndicator = NO;
     pageControl = [[UIPageControl alloc]init];
     pageControl.frame = CGRectMake(0, 424, 320, 36);
-    pageControl.currentPage = 0;
+    pageControl.currentPage = currnetPage;
     pageControl.numberOfPages = numberOfPages;
     
     for (int i=0; i<numberOfPages; i++) {
@@ -61,6 +64,15 @@
     }
     scrollView.delegate = self;            
     
+    UITapGestureRecognizer *singleFingerTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
+    singleFingerTap.numberOfTapsRequired = 1;
+    [scrollView addGestureRecognizer:singleFingerTap];
+    
+    singleFingerTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleDoubleTap:)];
+    singleFingerTap.numberOfTapsRequired = 2;
+    [scrollView addGestureRecognizer:singleFingerTap];
+    
+        
     [pageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
     pageControl.userInteractionEnabled= YES;
     [self.view addSubview:pageControl];
@@ -69,56 +81,90 @@
 
 -(void) changePage:(id)sender
 {
-    pageControlBeingUsed = YES;
+
+    NSLog(@"page:%@,%d",sender,currnetPage);
+    pageControl.currentPage = currnetPage;
     CGRect frame ;
-    frame.origin.x = scrollView.frame.size.width*pageControl.currentPage;
+    frame.origin.x = scrollView.frame.size.width * currnetPage;
     frame.origin.y = 0;
     frame.size = scrollView.frame.size;
     [scrollView scrollRectToVisible:frame animated:YES];
 }
 
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-	pageControlBeingUsed = NO;
+-(void)handleTap:(UIGestureRecognizer *)sender
+{
+    CGPoint point = [sender locationInView:sender.view.superview];
+    if (point.x<scrollView.frame.size.width/2) {
+        if (currnetPage>0)
+        {
+            currnetPage--;
+            [self changePage:nil];
+        }
+    }else {
+        if(currnetPage<(numberOfPages-1))
+        {
+            currnetPage++;
+            [self changePage:nil];
+            
+        }
+    }    
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-	pageControlBeingUsed = NO;
+-(void)handleDoubleTap:(UIGestureRecognizer *)sender
+{
+    NSLog(@"Double Tap");
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { 
+-(void) touchAction:(UITouch *)touch
+{
+    CGPoint point = [touch locationInView:self.view];
+    NSLog(@"touch point:%f,%f",point.x,point.y);
+    if (point.x<scrollView.frame.size.width/2) {
+        if (pageControl.currentPage>=1)
+        {
+            pageControl.currentPage = pageControl.currentPage - 1;
+            [self changePage:nil];
+        }
+    }else {
+        if(pageControl.currentPage<pageControl.numberOfPages)
+        {
+            pageControl.currentPage = pageControl.currentPage + 1;
+            [self changePage:nil];
+
+        }
+    }
     
-    if (!scrollView.dragging) 
-    {
+}
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event { 
+
         //[self.nextResponder touchesEnded: touches withEvent:event]; 
         // Detect touch anywhere
-        UITouch *touch = [touches anyObject];
-        NSLog(@"touch!");
-        switch ([touch tapCount]) 
-        {
-            case 1:
-                [self performSelector:@selector(oneTap) withObject:nil afterDelay:.5];
-                break;
-                
-            case 2:
-                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(oneTap) object:nil];
-                [self performSelector:@selector(twoTaps) withObject:nil afterDelay:.5];
-                break;
-                
-            case 3:
-                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(twoTaps) object:nil];
-                [self performSelector:@selector(threeTaps) withObject:nil afterDelay:.5];
-                break;
-                
-            default:
-                break;
-        }        
-    }
-    else
-    {
-        [super touchesEnded: touches withEvent: event];
-        
-    }
+    
+//    UITouch *touch = [touches anyObject];
+//    CGPoint point = [touch locationInView:self.view];
+//    NSInteger x= point.x;
+//    switch ([touch tapCount]) 
+//    {
+//        case 1:
+//            [self performSelector:@selector(touchAction:) withObject:touch afterDelay:.5];
+//            break;
+//            
+//        case 2:
+//            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(touchAction:) object:touch];
+//            [self performSelector:@selector(touchAction:) withObject:touch afterDelay:.5];
+//            break;
+//            
+//        case 3:
+//            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(touchAction:) object:touch];
+//            [self performSelector:@selector(touchAction:) withObject:touch afterDelay:.5];
+//            break;
+//            
+//        default:
+//            break;
+//    }          
+//      
+ 
     
 }
 
@@ -134,12 +180,11 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-    if(!pageControlBeingUsed)
-    {
-        CGFloat width = scrollView.frame.size.width;
-        int page = floor((scrollView.contentOffset.x-width/2)/width)+1;
-        pageControl.currentPage = page;
-    }
+
+    CGFloat width = scrollView.frame.size.width;
+    currnetPage = floor((scrollView.contentOffset.x-width/2)/width)+1;
+    pageControl.currentPage = currnetPage;
+
 
 }
 

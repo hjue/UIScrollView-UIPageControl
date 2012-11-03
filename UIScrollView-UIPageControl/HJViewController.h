@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@class HJScrollView;
+
 
 @interface HJViewController : UIViewController <UIScrollViewDelegate>
 {
     UIPageControl *pageControl;
-    UIScrollView* scrollView;
+    HJScrollView *scrollView;
 }
 
-@property (nonatomic, strong)   UIScrollView* scrollView;
+//@property (nonatomic, strong)   HJScrollView *scrollView;
 
 @end
